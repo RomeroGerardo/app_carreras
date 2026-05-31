@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Copy, Upload, CheckCircle2, ArrowLeft, ExternalLink, FileText } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import type { CreateTypes } from 'canvas-confetti';
 
 interface WizardStep3Props {
   formData: {
@@ -61,16 +62,29 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({ formData, onBack, onSu
 
     setIsSubmitting(true);
     setTimeout(() => {
-      confetti({
+      // Creamos el canvas manualmente con fondo TRANSPARENTE.
+      // En Samsung/WebView el canvas por defecto tiene fondo negro y tapa toda la pantalla.
+      const canvas = document.createElement('canvas');
+      canvas.style.cssText =
+        'position:fixed;top:0;left:0;width:100%;height:100%;' +
+        'pointer-events:none;z-index:999;background:transparent';
+      document.body.appendChild(canvas);
+
+      const myConfetti: CreateTypes = confetti.create(canvas, { resize: true, useWorker: false });
+      myConfetti({
         particleCount: 150,
         spread: 80,
         origin: { y: 0.6 },
         colors: ['#ea580c', '#ffffff', '#f97316', '#fb923c'],
         disableForReducedMotion: true,
       });
-      // Limpia el canvas de confetti tras la animación.
-      // En Samsung/WebView antiguo el canvas queda como capa negra si no se resetea.
-      setTimeout(() => confetti.reset(), 3500);
+
+      // Limpiar canvas del DOM cuando termina la animación
+      setTimeout(() => {
+        myConfetti.reset();
+        canvas.remove();
+      }, 3500);
+
       onSuccess(paymentMethod, uploadedFile || undefined);
       setIsSubmitting(false);
     }, 1500);
