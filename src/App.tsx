@@ -264,7 +264,7 @@ function App() {
 
           {/* Success Screen Step 4 */}
           {step === 4 && (
-            <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 md:p-12 shadow-2xl text-center space-y-8 animate-fade-in relative overflow-hidden">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 md:p-12 shadow-2xl text-center space-y-8 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-orange-600/10 rounded-full blur-3xl -z-10"></div>
               
               <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-orange-950 border border-orange-500/30 text-orange-500 mb-2">
