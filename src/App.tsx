@@ -23,31 +23,39 @@ function App() {
     setTimeout(() => setToastMessage(null), 5000);
   };
 
+  // Vuelve al tope de la página en cada cambio de paso
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
   const handleStep1Next = (data: Step1Input, suggestedCat: string) => {
     setFormData((prev) => ({ ...prev, step1: data }));
     setSuggestedCategory(suggestedCat);
     setStep(2);
+    scrollToTop();
     showToast('Paso 1 completado. Categoría sugerida cargada con éxito.');
   };
 
   const handleStep2Next = (data: Step2Input) => {
     setFormData((prev) => ({ ...prev, step2: data }));
     setStep(3);
+    scrollToTop();
     showToast('Paso 2 completado. Verifique los datos para el pago.');
   };
 
   const handleStep2Back = (currentData: Partial<Step2Input>) => {
     setFormData((prev) => ({ ...prev, step2: currentData }));
     setStep(1);
+    scrollToTop();
   };
 
   const handleStep3Back = () => {
     setStep(2);
+    scrollToTop();
   };
 
   const handlePaymentSuccess = (method: 'MercadoPago' | 'Transferencia', _file?: File) => {
     setPaymentMethod(method);
     setStep(4);
+    scrollToTop();
     if (method === 'MercadoPago') {
       showToast('¡Pago de Mercado Pago acreditado! Inscripción exitosa.');
     } else {
@@ -60,6 +68,7 @@ function App() {
     setSuggestedCategory('');
     setPaymentMethod(null);
     setStep(1);
+    scrollToTop();
   };
 
   // Check if age is master (+65) to apply extra accessibility properties dynamically if needed

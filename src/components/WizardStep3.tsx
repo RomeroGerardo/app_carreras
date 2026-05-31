@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Copy, Upload, CheckCircle2, ArrowLeft, ExternalLink, FileText } from 'lucide-react';
-import confetti from 'canvas-confetti';
-import type { CreateTypes } from 'canvas-confetti';
 
 interface WizardStep3Props {
   formData: {
@@ -61,36 +59,9 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({ formData, onBack, onSu
     }
 
     setIsSubmitting(true);
-
-    // 1️⃣ Primero navegar al paso 4 para que el contenido sea visible
-    setTimeout(() => {
-      onSuccess(paymentMethod, uploadedFile || undefined);
-      setIsSubmitting(false);
-
-      // 2️⃣ Después disparar el confetti (el contenido ya está renderizado)
-      setTimeout(() => {
-        const canvas = document.createElement('canvas');
-        canvas.style.cssText =
-          'position:fixed;top:0;left:0;width:100%;height:100%;' +
-          'pointer-events:none;z-index:999;background:transparent';
-        document.body.appendChild(canvas);
-
-        const myConfetti: CreateTypes = confetti.create(canvas, { resize: true, useWorker: false });
-        myConfetti({
-          particleCount: 150,
-          spread: 80,
-          origin: { y: 0.6 },
-          colors: ['#ea580c', '#ffffff', '#f97316', '#fb923c'],
-          disableForReducedMotion: true,
-        });
-
-        // Limpiar canvas del DOM cuando termina la animación
-        setTimeout(() => {
-          myConfetti.reset();
-          canvas.remove();
-        }, 3500);
-      }, 400); // 400ms le dan tiempo a React/Samsung de pintar el paso 4
-    }, 800); // Reducido a 800ms para no hacer esperar tanto al usuario
+    // Navegamos directo al paso 4 sin animaciones que bloquean en Samsung
+    onSuccess(paymentMethod, uploadedFile || undefined);
+    setIsSubmitting(false);
   };
 
   return (
