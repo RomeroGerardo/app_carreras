@@ -65,8 +65,12 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({ formData, onBack, onSu
         particleCount: 150,
         spread: 80,
         origin: { y: 0.6 },
-        colors: ['#ea580c', '#ffffff', '#f97316', '#18181b']
+        colors: ['#ea580c', '#ffffff', '#f97316', '#fb923c'],
+        disableForReducedMotion: true,
       });
+      // Limpia el canvas de confetti tras la animación.
+      // En Samsung/WebView antiguo el canvas queda como capa negra si no se resetea.
+      setTimeout(() => confetti.reset(), 3500);
       onSuccess(paymentMethod, uploadedFile || undefined);
       setIsSubmitting(false);
     }, 1500);
